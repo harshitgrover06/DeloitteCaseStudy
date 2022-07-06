@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    ViewData["Title"] = "Home Page";
+    string[] TableHeaders = new string[]{ 
+      " File Name "
+      ," User Name "
+      ," Created On "
+      ," Download Link"
+    };
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Upload your file</a>.</p>
+</div>
+
+@if (SignInManager.IsSignedIn(User)){
+<div class ="table" >
+    <table class="table table-bordered table hover">
+        <thead>
+            <tr>
+                @{
+                    foreach(var head in TableHeaders)
+                    {
+                            <th>@head</th>
+                    }
+                }
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+            if (Model != null)
+            {
+                foreach(var data in Model)
+                {
+                        <tr>
+                            
+                            <td>@data.Name</td>
+
+                            <td>@User.Identity?.Name.Split('@')[0]</td>
+                            <td>@data.createdon</td>
+                            <td><a href="/Home/DownloadFile/?filepath=@data.UserId@data.Name" ><button class="btn btn-primary">Download</button></a>
+                           
+                        </tr>    
+                }
+                
+            }
+        }
+        </tbody>
+    </table>
+</div>
+}
+else{
+    <h4 style="text-align:center;">Please Sign In to your Account !!</h4>
+}
+ 
